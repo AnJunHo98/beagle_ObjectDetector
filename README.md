@@ -1,54 +1,54 @@
 # beagle_ObjectDetector
 
-roboidai 카메라 객체 인식 결과를 ROS 2 토픽으로 publish하는 Beagle 로봇용 ROS 2 패키지 (2023)
+English | [한국어](README.ko.md)
 
-## 개요
+[2023] ROS 2 package for the Beagle robot that publishes roboidai camera object-detection results to a ROS 2 topic.
 
-ROS 2 `ament_python` 패키지 `beagle_ex`입니다. USB 카메라(`roboidai.Camera('usb0')`) 영상에서 roboidai `ObjectDetector`로 객체를 인식하고,
-인식된 라벨 목록을 `my_robot_interfaces/msg/Objectlist` 메시지로 `object_topic`에 0.5초 주기로 publish합니다.
-인식 결과는 카메라 창에 표시됩니다.
+## Overview
 
-## 저장소 구조
+`beagle_ex` is a ROS 2 `ament_python` package. It runs the roboidai `ObjectDetector` on the USB camera stream (`roboidai.Camera('usb0')`) and publishes the list of detected labels as a `my_robot_interfaces/msg/Objectlist` message on `object_topic` every 0.5 s. Detections are also shown in a camera window.
+
+## Repository layout
 
 ```
 beagle_ex/
-├── package.xml, setup.py, setup.cfg, resource/   # ROS 2 ament_python 패키지 설정
-├── beagle_ex/beagle.py                           # object_node: 객체 인식 + Objectlist publish
+├── package.xml, setup.py, setup.cfg, resource/   # ROS 2 ament_python package files
+├── beagle_ex/beagle.py                           # object_node: object detection + Objectlist publishing
 ├── beagle_ex/submodules/
-│   ├── ObjectDetector.py   # ROS 없이 객체 인식만 확인하는 단독 실행 스크립트
-│   ├── linetrice.py        # IP 카메라로 파란 트랙을 따라가는 Beagle 주행 예제
-│   ├── objectback.py       # 전방 lidar 거리가 가까우면 비프 후 후진하는 예제
-│   └── imported.py         # import 테스트용 함수
-└── test/                   # ament 기본 테스트 (copyright, flake8, pep257)
+│   ├── ObjectDetector.py   # standalone object-detection check without ROS
+│   ├── linetrice.py        # Beagle line-following example with an IP camera (blue track)
+│   ├── objectback.py       # beeps and backs up when the front lidar distance is short
+│   └── imported.py         # helper used to test imports
+└── test/                   # default ament tests (copyright, flake8, pep257)
 ```
 
-## 요구사항
+## Requirements
 
-`package.xml` 기준 의존성:
+Dependencies from `package.xml`:
 
 - `rclpy`, `example_interfaces`
-- `roboid`, `roboidai` (Beagle 로봇 / AI 카메라 Python 라이브러리)
-- `my_robot_interfaces` — `Objectlist` 메시지를 정의하는 별도 인터페이스 패키지로, 이 저장소에는 포함되어 있지 않습니다.
+- `roboid`, `roboidai` (Python libraries for the Beagle robot and the AI camera)
+- `my_robot_interfaces` — a separate interface package that defines the `Objectlist` message; it is not included in this repository.
 
-## 사용법
+## Usage
 
-`setup.py`에 `object_node` 실행 파일(`beagle_ex.beagle:main`)이 등록되어 있습니다.
+`setup.py` registers the `object_node` executable (`beagle_ex.beagle:main`).
 
 ```bash
-# ROS 2 workspace의 src/ 아래에 beagle_ex/를 두고 빌드
+# Put beagle_ex/ under src/ of a ROS 2 workspace, then build
 colcon build --packages-select beagle_ex
 source install/setup.bash
 
 ros2 run beagle_ex object_node
 ```
 
-- 노드 이름: `object_node`, 토픽: `object_topic` (`my_robot_interfaces/msg/Objectlist`, 필드 `object_list`)
-- 실행 시 roboidai 객체 인식 모델을 다운로드한 뒤 로드합니다.
+- Node name: `object_node`; topic: `object_topic` (`my_robot_interfaces/msg/Objectlist`, field `object_list`)
+- On start it downloads and loads the roboidai object-detection model.
 
-## 상태
+## Status
 
-2023년 프로젝트이며 더 이상 유지보수되지 않습니다.
+A 2023 project; no longer maintained.
 
-## 라이선스
+## License
 
-비공개 저장소이며 별도 라이선스 파일은 없습니다.
+MIT License — see [LICENSE](LICENSE).
