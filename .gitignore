@@ -1,0 +1,7 @@
+
+# Generated files (not tracked)
+__pycache__/
+*.pyc
+build/
+install/
+log/
